@@ -31,6 +31,8 @@ def write_to_dynamodb(json):
                         'OccurredFrom_Timestamp': record['attributes']['OccurredFrom_Timestamp'],
                         'OccurredThrough_Timestamp': record['attributes']['OccurredThrough_Timestamp'],
                         'Geocode_Street': record['attributes']['Geocode_Street'],
+                        'Address_City': record['attributes']['Address_City'],
+                        'Address_State': record['attributes']['Address_State'],
                         'Statute_CrimeCategory': record['attributes']['Statute_CrimeCategory'],
                         'Statute_Degree': record['attributes']['Statute_Degree'],
                         'Statute_Text': record['attributes']['Statute_Text'],
@@ -51,6 +53,8 @@ def write_to_dynamodb(json):
                         'OccurredFrom_Timestamp': record['attributes']['OccurredFrom_Timestamp'],
                         'OccurredThrough_Timestamp': record['attributes']['OccurredThrough_Timestamp'],
                         'Geocode_Street': record['attributes']['Geocode_Street'],
+                        'Address_City': record['attributes']['Address_City'],
+                        'Address_State': record['attributes']['Address_State'],
                         'Statute_CrimeCategory': record['attributes']['Statute_CrimeCategory'],
                         'Statute_Degree': record['attributes']['Statute_Degree'],
                         'Statute_Text': record['attributes']['Statute_Text'],
@@ -80,16 +84,10 @@ def get_year_data(year):
     write_to_dynamodb(response['features'])
 
 def main():
-    """ Main Function to loop through each year and start its own thread """ 
-    threads = []
+    """ Main Function to loop through each year """ 
     #
     for i in range(2011, datetime.now().year):
-        t = Thread(target=get_year_data, args=[i])
-        threads.append(t)
-        t.start()
-
-    for thread in threads:
-        thread.join()
+        get_year_data(i)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='A function to capture the json data for 2011 - Current Year')
